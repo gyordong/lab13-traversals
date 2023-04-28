@@ -132,8 +132,20 @@ public class BinarySearchTree<T extends Comparable<T>> {
 	//Traverse the tree in an preorder fashion but using a stack
 	//Print the current node first and then recurse on the children
 	public void preOrderStack() {
+		if (root == null) {
+			return;
+		}
 		Stack<BSTNode<T>> pre = new Stack<BSTNode<T>>();
-		
+		BSTNode current = root;
+		while (current != null || pre.size() > 0	) {
+			while (current != null) {
+				pre.push(current);
+				System.out.print(current.data + " ");
+				current = current.leftChild;
+			}
+			current = pre.pop();
+			current = current.rightChild;
+		}
 	}
 		
 
@@ -159,10 +171,29 @@ public class BinarySearchTree<T extends Comparable<T>> {
     }
 	//Traverse the tree in an inorder fashion but using a stack
 	public void inOrderStack() {
-		Stack<BSTNode<T>> in = new Stack<BSTNode<T>>();
-		
-		
+        if(root == null) {
+            return;
+        }
+        
+        Stack<BSTNode<T>> in = new Stack<BSTNode<T>>();
+        BSTNode<T> curr = root;
+
+        
+        while(curr != null || in.size() > 0) {
+            while(curr != null) {
+                in.push(curr);
+                curr = curr.leftChild;
+
+            }
+
+            curr = in.pop();
+            System.out.print(curr.data + " ");
+            curr = curr.rightChild;
+        }
 	}
+
+
+
 	
 	//Traverse the tree in an postorder fashion
 	//Recurse on the children and then print the value in the current node
@@ -185,12 +216,23 @@ public class BinarySearchTree<T extends Comparable<T>> {
 	//I suggest using two stacks. Think about the order you want the elements
 	//to appear on the stack you will print.
 	public void postOrderStack() {
+		if (root == null) {
+			return;
+		}
 		Stack<BSTNode<T>> post = new Stack<>();
 		Stack<BSTNode<T>> postHelper = new Stack<>();
 		if(root!=null) {
 			postHelper.push(root);
 			while(!postHelper.isEmpty()) {
 				//how should post and postHelper be updated?
+				BSTNode node = postHelper.pop();
+				post.push(node);
+				if (node.leftChild != null) {
+					postHelper.push(node.leftChild);
+				}
+				if (node.rightChild != null) {
+					postHelper.push(node.rightChild);
+				}
 			}
 			
 			while(!post.isEmpty()) {
